@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      .wrapper {
+        display:flex;
+      }
+      .center {
+        flex:1; 
+        height:100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .left {
+        flex:1;
+        border:solid 1px;
+      }
+      .right {
+        flex:1;
+        border:solid 1px;
+      }
+      .text-area {
+        text-align: left;
+        font: 14px 宋体;
+        border: 0
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="left">
+        <textarea id="originalTextVal" class="text-area" rows="30" cols="45" placeholder="请在该输入框粘贴待去重的文本"></textarea>
+      </div>
+      <div class="center">
+        <div class="center-btn">
+          <button onclick="removeDuplicate()">去除重复</button>
+          <br/>
+          <button onclick="copyResult()">复制结果</button>
+        </div>
+      </div>
+      <div class="right">
+        <textarea id="resultTextVal" class="text-area" rows="30" cols="45" placeholder="去重后的结果"></textarea>
+      </div>
+    </div>
+  </body>
+
+  <script>
+    function removeDuplicate() {
+      let originalTextVal = document.getElementById("originalTextVal").value;
+      let result = window.removeDuplicateLines(originalTextVal);
+      document.getElementById("resultTextVal").innerHTML = result;
+    }
+
+    function copyResult() {
+      let result = document.getElementById("resultTextVal").value;
+      if (navigator.clipboard) {
+          navigator.clipboard.writeText(result);
+      }
+    }
+  </script>
+</html>

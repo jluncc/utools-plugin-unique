@@ -1,0 +1,13 @@
+{
+	"main": "index.html",
+  "preload": "preload.js",
+  "logo": "utools-plugin-unique-logo.png",
+	"version": "0.0.1",
+	"features": [
+		{
+		  "code": "core",
+		  "explain": "文本去重",
+			"cmds": ["unique", "去重", "文本去重"]
+		}
+	]
+}
