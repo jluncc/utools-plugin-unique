@@ -110,6 +110,19 @@ class Wrapper extends React.Component {
     }
   }
 
+  componentDidMount() {
+    window.utools.onPluginEnter(enter => {
+      // console.log("enter: ", enter);
+      let payload = enter.payload;
+      if (enter.type == 'over' && (payload !== null || payload !== undefined || payload !== '')) {
+        this.setState({
+          sourceText: payload,
+          resultText: MyUtil.removeDuplicateLines(payload)
+        })
+      }
+    })
+  }
+
   handleSourceTextChange = (sourceText) => {
     this.setState({
       sourceText: sourceText,
