@@ -58,4 +58,6 @@
   overflow: hidden;
   display: flex; 
   flex-grow: 1;
+  white-space: nowrap;
+  overflow-x: auto; /* 横向滚动条 */
 }
