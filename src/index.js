@@ -47,14 +47,14 @@ class SourceTextArea extends React.Component {
 
     return (
       <div className={style.textareaContainer}>
-        <div className={style.lineNumbers} style={{ height: `${parseFloat(lineHeight) * linesToShow}px`, position: 'relative' }}>
+        <div className={style.lineNumbers} style={{ height: `${parseFloat(lineHeight) * linesToShow}px` }}>
           {Array.from({ length: linesToShow }, (_, i) => <div key={i}>{i + 1}</div>)}
         </div>
-        <div className={style.textareaWithLineNumbers} style={{ position: 'relative', display: 'inline-block' }}>
+        <div className={style.textareaWithLineNumbers}>
           <textarea
             placeholder="请在该输入框粘贴待去重的文本"
             value={sourceText} onChange={this.handleChange}
-            ref={this.handleRef} 
+            ref={this.handleRef}
           />
         </div>
       </div>
@@ -86,14 +86,13 @@ class ResultTextArea extends React.Component {
 
     return (
       <div className={style.textareaContainer}>
-        <div className={style.lineNumbers} style={{ height: `${parseFloat(lineHeight) * resultTextLines}px`, position: 'relative' }}>
+        <div className={style.lineNumbers} style={{ height: `${parseFloat(lineHeight) * resultTextLines}px` }}>
           {Array.from({ length: resultTextLines }, (_, i) => <div key={i}>{i + 1}</div>)}
         </div>
-        <div className={style.textareaWithLineNumbers} style={{ position: 'relative', display: 'inline-block' }}>
+        <div className={style.textareaWithLineNumbers}>
           <textarea
             placeholder="去重后的结果"
             defaultValue={resultText}
-            // onChange={this.handleChange}
             ref={this.handleRef} 
           />
         </div>
