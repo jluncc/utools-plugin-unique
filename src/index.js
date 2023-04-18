@@ -3,38 +3,102 @@ import ReactDOM from 'react-dom/client';
 import style from './index.css';
 import MyUtil from './util';
 
+
 class SourceTextArea extends React.Component {
   constructor(props) {
     super(props);
-    this.handleChange = this.handleChange.bind(this)
+    this.state = { lineHeight: '20px', linesToShow: 30 };
+    this.handleChange = this.handleChange.bind(this);
+    this.handleRef = this.handleRef.bind(this);
+    this.calculateLinesToShow = this.calculateLinesToShow.bind(this);
   }
+
+  componentDidMount() {
+    const textArea = this.textAreaRef;
+    const lineHeight = window.getComputedStyle(textArea).getPropertyValue('line-height');
+    this.setState({ lineHeight });
+  }
+
   handleChange(event) {
+    const textArea = event.target;
+    const lines = textArea.value.split('\n').length;
+    const newLinesToShow = Math.max(this.state.linesToShow, lines);
+    if (newLinesToShow !== this.state.linesToShow) {
+      this.setState({ linesToShow: newLinesToShow });
+    }
     this.props.handleSourceTextChange(event.target.value);
   }
 
+  handleRef(ref) {
+    this.textAreaRef = ref;
+  }
+
+  calculateLinesToShow() {
+    const textArea = this.textAreaRef;
+    const lineHeight = window.getComputedStyle(textArea).getPropertyValue('line-height');
+    const height = parseInt(window.getComputedStyle(textArea).getPropertyValue('height'));
+    const scrollbarWidth = textArea.offsetWidth - textArea.clientWidth;
+    return Math.floor((height - scrollbarWidth) / parseFloat(lineHeight));
+  }
+
   render() {
+    const { sourceText } = this.props;
+    const { lineHeight, linesToShow } = this.state;
+
     return (
-      <div className={style.left}>
-        <textarea rows="30" cols="45" placeholder="请在该输入框粘贴待去重的文本" 
-          value={this.props.sourceText} onChange={this.handleChange}>
-        </textarea>
+      <div className={style.textareaContainer}>
+        <div className={style.lineNumbers} style={{ height: `${parseFloat(lineHeight) * linesToShow}px`, position: 'relative' }}>
+          {Array.from({ length: linesToShow }, (_, i) => <div key={i}>{i + 1}</div>)}
+        </div>
+        <div className={style.textareaWithLineNumbers} style={{ position: 'relative', display: 'inline-block' }}>
+          <textarea
+            placeholder="请在该输入框粘贴待去重的文本"
+            value={sourceText} onChange={this.handleChange}
+            ref={this.handleRef} 
+          />
+        </div>
       </div>
-    )
+    );
   }
 }
 
 class ResultTextArea extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
+    this.state = { lineHeight: '20px' };
+    this.handleRef = this.handleRef.bind(this);
+  }
+
+  componentDidMount() {
+    const textArea = this.textAreaRef;
+    const lineHeight = window.getComputedStyle(textArea).getPropertyValue('line-height');
+    this.setState({ lineHeight });
+  }
+
+  handleRef(ref) {
+    this.textAreaRef = ref;
   }
 
   render() {
+    const { resultText } = this.props;
+    const { lineHeight } = this.state;
+    const resultTextLines = Math.max(30, resultText.split('\n').length);
+
     return (
-      <div className={style.right}>
-        <textarea rows="30" cols="45" placeholder="去重后的结果" defaultValue={this.props.resultText}>
-        </textarea>
+      <div className={style.textareaContainer}>
+        <div className={style.lineNumbers} style={{ height: `${parseFloat(lineHeight) * resultTextLines}px`, position: 'relative' }}>
+          {Array.from({ length: resultTextLines }, (_, i) => <div key={i}>{i + 1}</div>)}
+        </div>
+        <div className={style.textareaWithLineNumbers} style={{ position: 'relative', display: 'inline-block' }}>
+          <textarea
+            placeholder="去重后的结果"
+            defaultValue={resultText}
+            // onChange={this.handleChange}
+            ref={this.handleRef} 
+          />
+        </div>
       </div>
-    )
+    );
   }
 }
 
@@ -111,16 +175,16 @@ class Wrapper extends React.Component {
   }
 
   componentDidMount() {
-    window.utools.onPluginEnter(enter => {
-      // console.log("enter: ", enter);
-      let payload = enter.payload;
-      if (enter.type == 'over' && (payload !== null || payload !== undefined || payload !== '')) {
-        this.setState({
-          sourceText: payload,
-          resultText: MyUtil.removeDuplicateLines(payload)
-        })
-      }
-    })
+    // window.utools.onPluginEnter(enter => {
+    //   // console.log("enter: ", enter);
+    //   let payload = enter.payload;
+    //   if (enter.type == 'over' && (payload !== null || payload !== undefined || payload !== '')) {
+    //     this.setState({
+    //       sourceText: payload,
+    //       resultText: MyUtil.removeDuplicateLines(payload)
+    //     })
+    //   }
+    // })
   }
 
   handleSourceTextChange = (sourceText) => {

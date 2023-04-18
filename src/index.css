@@ -17,3 +17,44 @@
 .right {
   flex: 1;
 }
+
+.textareaContainer {
+  height: 100%;
+  display: flex;
+  align-items: stretch;
+}
+
+.lineNumbers {
+  width: 30px;
+  padding: 5px;
+  font-family: monospace;
+  background-color: #f7f7f7;
+  border-right: 1px solid #ddd;
+  user-select: none;
+  overflow-y: auto;
+  position: relative;
+}
+
+.lineNumbers div {
+  text-align: right;
+  color: #999;
+  padding: 0 5px 0 0;
+  line-height: 20px;
+}
+
+.textareaWithLineNumbers {
+  position: relative;
+  display: inline-block;
+}
+
+.textareaWithLineNumbers textarea {
+  border: none;
+  outline: none;
+  resize: none;
+  font-size: 16px;
+  font-family: monospace;
+  padding: 5px;
+  line-height: 20px;
+  height: 100%;
+  overflow: hidden;
+}
