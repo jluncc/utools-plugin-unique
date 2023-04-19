@@ -1,6 +1,6 @@
 {
   "name": "utools-plugin-unique",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "utools 文本去重排序插件",
   "scripts": {
     "dev": "webpack-dev-server --mode development",
@@ -17,8 +17,10 @@
     "webpack-dev-server": "^4.11.1"
   },
   "dependencies": {
+    "antd": "^5.4.2",
     "copy-webpack-plugin": "^11.0.0",
     "css-loader": "^6.7.1",
+    "dayjs": "latest",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "style-loader": "^3.3.1"

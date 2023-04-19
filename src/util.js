@@ -28,6 +28,9 @@ export default {
 
   sortText: function sortText(type, text) {
     // console.log("sortText - type: %s, text: %s", type, text);
+    if (!text) {
+      return ''
+    }
     let start = performance.now();
 
     let lines = text.split('\n');

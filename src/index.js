@@ -2,30 +2,20 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import style from './index.css';
 import MyUtil from './util';
+import { Input, Button } from 'antd';
+import 'antd/dist/reset.css';
 
+const { TextArea } = Input;
 
 class SourceTextArea extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { lineHeight: '20px', linesToShow: 30 };
+    this.state = { lineHeight: '20px' };
     this.handleChange = this.handleChange.bind(this);
     this.handleRef = this.handleRef.bind(this);
-    this.calculateLinesToShow = this.calculateLinesToShow.bind(this);
-  }
-
-  componentDidMount() {
-    const textArea = this.textAreaRef;
-    const lineHeight = window.getComputedStyle(textArea).getPropertyValue('line-height');
-    this.setState({ lineHeight });
   }
 
   handleChange(event) {
-    const textArea = event.target;
-    const lines = textArea.value.split('\n').length;
-    const newLinesToShow = Math.max(this.state.linesToShow, lines);
-    if (newLinesToShow !== this.state.linesToShow) {
-      this.setState({ linesToShow: newLinesToShow });
-    }
     this.props.handleSourceTextChange(event.target.value);
   }
 
@@ -33,17 +23,11 @@ class SourceTextArea extends React.Component {
     this.textAreaRef = ref;
   }
 
-  calculateLinesToShow() {
-    const textArea = this.textAreaRef;
-    const lineHeight = window.getComputedStyle(textArea).getPropertyValue('line-height');
-    const height = parseInt(window.getComputedStyle(textArea).getPropertyValue('height'));
-    const scrollbarWidth = textArea.offsetWidth - textArea.clientWidth;
-    return Math.floor((height - scrollbarWidth) / parseFloat(lineHeight));
-  }
-
   render() {
     const { sourceText } = this.props;
-    const { lineHeight, linesToShow } = this.state;
+    const { lineHeight } = this.state;
+    const linesToShow = Math.max(30, sourceText.split('\n').length);
+    // console.log("linesToShow: ", linesToShow);
 
     return (
       <div className={style.textareaContainer}>
@@ -51,7 +35,7 @@ class SourceTextArea extends React.Component {
           {Array.from({ length: linesToShow }, (_, i) => <div key={i}>{i + 1}</div>)}
         </div>
         <div className={style.textareaWithLineNumbers}>
-          <textarea
+          <TextArea
             placeholder="请在该输入框粘贴待去重的文本"
             value={sourceText} onChange={this.handleChange}
             ref={this.handleRef}
@@ -69,12 +53,6 @@ class ResultTextArea extends React.Component {
     this.handleRef = this.handleRef.bind(this);
   }
 
-  componentDidMount() {
-    const textArea = this.textAreaRef;
-    const lineHeight = window.getComputedStyle(textArea).getPropertyValue('line-height');
-    this.setState({ lineHeight });
-  }
-
   handleRef(ref) {
     this.textAreaRef = ref;
   }
@@ -90,9 +68,9 @@ class ResultTextArea extends React.Component {
           {Array.from({ length: resultTextLines }, (_, i) => <div key={i}>{i + 1}</div>)}
         </div>
         <div className={style.textareaWithLineNumbers}>
-          <textarea
+          <TextArea
             placeholder="去重后的结果"
-            defaultValue={resultText}
+            value={resultText}
             ref={this.handleRef} 
           />
         </div>
@@ -109,12 +87,12 @@ class CopyBtn extends React.Component {
   render() {
     return (
       <div className={style.sbtnline}>
-        <div>
+        <div className={style.sbtnword}>
           <p>复制文本</p>
         </div>
         <div>
-          <button onClick={() => navigator.clipboard.writeText(this.props.sourceText)}>左</button>
-          <button onClick={() => navigator.clipboard.writeText(this.props.resultText)}>右</button>
+          <Button onClick={() => navigator.clipboard.writeText(this.props.sourceText)}>左</Button>
+          <Button onClick={() => navigator.clipboard.writeText(this.props.resultText)}>右</Button>
         </div>
       </div>
     )
@@ -126,21 +104,19 @@ class SortBtn extends React.Component {
     super(props);
     this.handleSort = this.handleSort.bind(this)
   }
-  handleSort(e) {
-    this.props.handleSortText(e.target.getAttribute('stype'), e.target.getAttribute('stext'));
+  handleSort(stype, stext) {
+    this.props.handleSortText(stype, stext);
   }
 
   render() {
     return (
       <div className={style.sbtnline}>
-        <div>
+        <div className={style.sbtnword}>
           <p>排序文本</p>
         </div>
-        <div>
-          <div>
-            <button stype="asc" stext={this.props.sourceText} onClick={this.handleSort}>升</button>
-            <button stype="desc" stext={this.props.sourceText} onClick={this.handleSort}>降</button>
-          </div>
+        <div className={style.sbtn}>
+            <Button onClick={() => this.handleSort('asc', this.props.sourceText)}>升</Button>
+            <Button onClick={() => this.handleSort('desc', this.props.sourceText)}>降</Button>
         </div>
       </div>
     )
@@ -174,16 +150,12 @@ class Wrapper extends React.Component {
   }
 
   componentDidMount() {
-    // window.utools.onPluginEnter(enter => {
-    //   // console.log("enter: ", enter);
-    //   let payload = enter.payload;
-    //   if (enter.type == 'over' && (payload !== null || payload !== undefined || payload !== '')) {
-    //     this.setState({
-    //       sourceText: payload,
-    //       resultText: MyUtil.removeDuplicateLines(payload)
-    //     })
-    //   }
-    // })
+    window.utools.onPluginEnter(enter => {
+      let payload = enter.payload;
+      if (enter.type == 'over' && (payload !== null || payload !== undefined || payload !== '')) {
+        this.handleSourceTextChange(payload);
+      }
+    })
   }
 
   handleSourceTextChange = (sourceText) => {
