@@ -1,40 +1,12 @@
-.wrapper {
-  display: flex;
-}
-.center {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  flex-flow: column wrap;
-  width: 10%;
-}
-.sbtnline {
-  /* flex: 1; */
-  align-items: center;
-}
-.sbtnword {
-  flex: 1;
-  align-items: center;
-}
-.sbtnword p {
-  margin: 16px 0 16px 12px;
-}
-.sbtn {
-  align-items: center;
-}
-
 .textareaContainer {
-  height: 100%;
   display: flex;
   align-items: stretch;
-  width: 45%;
 }
 
 .lineNumbers {
-  padding: 5px;
+  padding: 4px;
   font-family: monospace;
   background-color: #f7f7f7;
-  border-right: 1px solid #ddd;
   user-select: none;
   overflow-y: auto;
   position: relative;
@@ -43,7 +15,7 @@
 .lineNumbers div {
   text-align: right;
   color: #999;
-  padding: 0 5px 0 0;
+  padding: 0 4px 0 0;
   line-height: 20px;
 }
 
@@ -58,7 +30,6 @@
   resize: none;
   font-size: 16px;
   font-family: monospace;
-  padding: 5px;
   line-height: 20px;
   overflow: hidden;
   display: flex; 
