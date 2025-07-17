@@ -1,24 +1,25 @@
 {
-	"main": "/index.html",
+	"main": "index.html",
 	"preload": "preload.js",
 	"logo": "utools-plugin-unique-logo.png",
-	"version": "0.1.0",
+	"version": "0.2.0",
 	"features": [
 		{
 			"code": "core",
 			"explain": "将文本按行分隔，进行去重或排序",
 			"cmds": [
-				"文本去重", "文本排序", 
+				"文本去重",
+				"文本排序",
 				{
 					"type": "over",
 					"label": "文本去重排序",
 					"minLength": 80
-    		}
+				}
 			]
 		}
 	],
 	"pluginSetting": {
-    "single": false
+		"single": false
 	},
 	"development": {
 		"main": "http://127.0.0.1:3000/index.html"
